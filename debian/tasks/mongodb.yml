@@ -1,0 +1,18 @@
+- block: #MongoDB
+    - name: Add MongoDB public GPG key
+      apt_key:
+        url: https://www.mongodb.org/static/pgp/server-4.2.asc
+    - name: "Add  MongoDB repository for Debian {{ ansible_distribution_major_version }} ({{ ansible_distribution_release }})"
+      apt_repository:
+        repo: "deb http://repo.mongodb.org/apt/debian {{ ansible_distribution_release }}/mongodb-org/4.2 main"
+        filename: mongodb-org-4.2
+    - name: Install MongoDB
+      apt:
+        name: mongodb-org
+    - name: Reload config
+      systemd: daemon-reload="yes"
+    - name: Ensure MongoDB enabled and started
+      service:
+        name: mongod
+        enabled: yes
+        state: started

@@ -1,0 +1,33 @@
+- block: #php
+    - name: Add SURY PHP PPA repository GPG key
+      apt_key:
+        url: https://packages.sury.org/php/apt.gpg
+        keyring: /etc/apt/trusted.gpg.d/php.gpg
+    - name: "Add SURY PHP repository for Debian {{ ansible_distribution_major_version }} ({{ ansible_distribution_release }})"
+      apt_repository:
+        repo: "deb https://packages.sury.org/php/ {{ ansible_distribution_release }} main"
+        filename: php
+    - name: Install php 7.4 cli and php 7.4 fpm
+      apt:
+        name: [
+            php7.4-cli,
+            php7.4-fpm
+        ]
+    - name: Ensure that PHP 7.4 FPM is started
+      service:
+        name: php7.4-fpm
+        state: started
+    - name: "Install php extensions: common, curl, intl, json, mbstring, mysql, opcache, zip, xml"
+      apt:
+        state: present
+        name: [
+            php7.4-common,
+            php7.4-curl,
+            php7.4-intl,
+            php7.4-json,
+            php7.4-mbstring,
+            php7.4-mysql,
+            php7.4-opcache,
+            php7.4-xml,
+            php7.4-zip,
+        ]

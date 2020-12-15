@@ -1,0 +1,23 @@
+- block: #NGINX
+    - name: "Add NGINX apt repository for Debian {{ ansible_distribution_major_version }} ({{ ansible_distribution_release }})"
+      apt_repository:
+        repo: "deb https://nginx.org/packages/debian/ {{ ansible_distribution_release }} nginx"
+        filename: nginx
+    - name: Import NGINX signin key and check it
+      apt_key:
+        url: https://nginx.org/keys/nginx_signing.key
+    - name: Install NGINX
+      apt: name=nginx-light
+    - name: Create if not exists sites-available and sites-enabled
+      file:
+        path: '/etc/nginx/{{ item }}'
+        state: directory
+      with_items: ['sites-available','sites-enabled']
+    - name: Remove default conf if present
+      file:
+        path: ['/etc/nginx/sites-available/default','/etc/nginx/conf/default']
+        state: absent
+    - name: Ensure NGINX started
+      service:
+        name: nginx
+        state: started

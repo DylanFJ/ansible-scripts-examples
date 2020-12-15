@@ -1,0 +1,8 @@
+- block: #apache2
+    - name: Install apache2
+      apt:
+        name: apache2
+    - name: Ensure apache2 started
+      systemd:
+        name: apache2
+        state: started

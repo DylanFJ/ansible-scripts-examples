@@ -1,0 +1,13 @@
+- block: # varnish
+    - name: Get varnish setup file
+      get_url:
+        url: https://packagecloud.io/install/repositories/varnishcache/varnish64/script.deb.sh
+        dest: /tmp/setup_varnish-6.4.x.sh
+        mode: 0700
+    - name: Execute varnish setup
+      command: /tmp/setup_varnish-6.4.x.sh
+    - name: Remove varnish setup
+      file: path=/tmp/setup_varnish-6.4.x.sh state=absent
+    - name: Install varnish
+      apt:
+        name: varnish
