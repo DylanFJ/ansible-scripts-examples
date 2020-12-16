@@ -1,0 +1,13 @@
+- block: #nodejs
+    - name: Get Node.js LTS setup file
+      get_url:
+        url: https://deb.nodesource.com/setup_lts.x
+        dest: /tmp/nodejs_setup_lts.x
+        mode: 0700
+    - name: Execute Node.js LTS setup file
+      command: /tmp/nodejs_setup_lts.x
+    - name: Remove Node.js LTS setup file
+      file: path=/tmp/nodejs_setup_lts.x state=absent
+    - name: Install Node.js LTS
+      apt:
+        name: nodejs
